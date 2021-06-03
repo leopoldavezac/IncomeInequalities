@@ -32,6 +32,10 @@ def clean_value_field(df):
     df.loc[df.value.isna(), "value"] = -1
     df["value"] = df.value.apply(convert_to_float)
 
+    df = df.loc[df.value > 0]
+
+    df["value"] *= 100
+
     return df
 
 
@@ -39,12 +43,8 @@ def add_country_code(df):
 
     df = df.copy(deep=True)
 
-    country_nms_to_drop = [
-        'Macao', 'Myanmar', 'Palestine', 'Zanzibar'
-        ]
-
+    country_nms_to_drop = ['Macao', 'Myanmar', 'Palestine', 'Zanzibar']
     df = df.loc[~df.country.isin(country_nms_to_drop)]
-
     df.country.replace({
         "Korea":"Korea, South",
         "North Korea":"Korea, North",
@@ -56,6 +56,7 @@ def add_country_code(df):
         "Syrian Arab Republic":"Syria",
         "Russian Federation":"Russia"
         }, inplace=True)
+
 
     country_nm_to_code_df = pd.read_csv(
         'https://raw.githubusercontent.com/plotly/datasets/master/2014_world_gdp_with_codes.csv',
