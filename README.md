@@ -1,4 +1,4 @@
-# income_inequality
+# Income Inequalities
 
 ## Content
 
